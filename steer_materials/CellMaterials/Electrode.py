@@ -631,14 +631,6 @@ class _ActiveMaterial(_Material, DataMixin):
         
         return fig
 
-    def pickle(self):
-        """
-        Serializes the object to a byte stream.
-        
-        :return: bytes: Serialized byte stream of the object.
-        """
-        return dumps(self)
-
     @property
     def voltage_cutoff(self) -> float:
         """
@@ -1113,4 +1105,5 @@ class ConductiveAdditive(_Material):
         material = deepcopy(loads(data['object'].iloc[0]))
 
         return material
+
 
