@@ -2,13 +2,13 @@ from steer_core.DataManager import DataManager
 from steer_core.Constants.Units import *
 from steer_core.Decorators.Electrochemical import calculate_half_cell_curves_properties
 from steer_core.Mixins.Data import DataMixin
+from steer_core.Mixins.Serializer import SerializerMixin
 
 from steer_materials.Base import _Material
 
 import pandas as pd
 import numpy as np
 import plotly.express as px
-from pickle import dumps, loads
 from typing import List, Union, Optional
 from copy import deepcopy
 
@@ -938,7 +938,8 @@ class CathodeMaterial(_ActiveMaterial):
             raise ValueError(f"Material '{name}' not found in the database. Available materials: {available_materials}")
         
         data = database.get_cathode_materials(most_recent=True).query(f"name == '{name}'")
-        material = deepcopy(loads(data['object'].iloc[0]))
+        string_rep = data['object'].iloc[0]
+        material = SerializerMixin.deserialize(string_rep)
         return material
 
     @property
@@ -1022,7 +1023,8 @@ class AnodeMaterial(_ActiveMaterial):
             raise ValueError(f"Material '{name}' not found in the database. Available materials: {available_materials}")
         
         data = database.get_anode_materials(most_recent=True).query(f"name == '{name}'")
-        material = deepcopy(loads(data['object'].iloc[0]))
+        string_rep = data['object'].iloc[0]
+        material = SerializerMixin.deserialize(string_rep)
         return material
 
 
@@ -1065,7 +1067,8 @@ class Binder(_Material):
             raise ValueError(f"Material '{name}' not found in the database. Available materials: {available_materials}")
         
         data = database.get_binder_materials(most_recent=True).query(f"name == '{name}'")
-        material = deepcopy(loads(data['object'].iloc[0]))
+        string_rep = data['object'].iloc[0]
+        material = SerializerMixin.deserialize(string_rep)
         return material
 
 
@@ -1102,8 +1105,8 @@ class ConductiveAdditive(_Material):
             raise ValueError(f"Material '{name}' not found in the database. Available materials: {available_materials}")
         
         data = database.get_conductive_additive_materials(most_recent=True).query(f"name == '{name}'")
-        material = deepcopy(loads(data['object'].iloc[0]))
-
+        string_rep = data['object'].iloc[0]
+        material = SerializerMixin.deserialize(string_rep)
         return material
 
 

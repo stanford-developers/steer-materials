@@ -180,6 +180,10 @@ class TestLFPSingleCurve(unittest.TestCase):
 
         # figure.show()
 
+    def test_from_database(self):
+        self.material = CathodeMaterial.from_database('LFP')
+        self.assertTrue(isinstance(self.material, CathodeMaterial))
+
     def test_irreversible_capacity_scaling(self):
         """
         Test irreversible capacity scaling
