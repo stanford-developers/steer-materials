@@ -39,8 +39,8 @@ class _Material(ValidationMixin, SerializerMixin):
         self._update_ranges()
 
     def _update_ranges(self):
-        self._density_range = (self._density * 0.8, self._density * 1.2)
-        self._specific_cost_range = (self._specific_cost * 0.5, self._specific_cost * 3)
+        self._density_range = (self._density * 0.9, self._density * 1.1)
+        self._specific_cost_range = (self._specific_cost * 0.5, self._specific_cost * 2)
 
     @property
     def density(self):
@@ -54,10 +54,8 @@ class _Material(ValidationMixin, SerializerMixin):
         )
 
     @property
-    def density_marks(self):
-        min = np.ceil(self.density_range[0])
-        max = np.floor(self.density_range[1])
-        return {i: '' for i in range(int(min), int(max) + 1, 1)}
+    def density_hard_range(self):
+        return (0, 100)
 
     @property
     def specific_cost(self):
@@ -69,12 +67,10 @@ class _Material(ValidationMixin, SerializerMixin):
             round(self._specific_cost_range[0], 2), 
             round(self._specific_cost_range[1], 2)
         )
-
+    
     @property
-    def specific_cost_marks(self):
-        min = np.ceil(self.specific_cost_range[0])
-        max = np.floor(self.specific_cost_range[1])
-        return {i: '' for i in range(int(min), int(max) + 1, 5)}
+    def specific_cost_hard_range(self):
+        return (0, 1000)
 
     @property
     def name(self):
