@@ -1,5 +1,4 @@
-from distutils.core import setup
-from setuptools import find_packages
+from setuptools import setup, find_packages
 import pathlib
 import re
 
@@ -15,19 +14,19 @@ setup(
     author_email='nsiemons@stanford.edu',
     url="https://github.com/stanford-developers/steer-materials/",
     packages=find_packages(),
+    include_package_data=True,
     install_requires=[
         "pandas==2.1.4",
         "numpy==1.26.4",
         "datetime==5.5",
-        "plotly==5.19.0",
-        "dash==2.18.1",
-        "dash_bootstrap_components==1.6.0",
+        "plotly==6.2.0",
+        "dash==3.1.1",
+        "dash_bootstrap_components==2.0.3",
         "flask_caching==2.3.1",
     ],
     scripts=[],
     classifiers=[ 
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.10",
