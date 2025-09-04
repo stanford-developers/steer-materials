@@ -9,7 +9,7 @@ from steer_materials.Base import _Material
 import pandas as pd
 import numpy as np
 import plotly.express as px
-from typing import List, Union, Optional
+from typing import List, Tuple, Union, Optional
 from copy import deepcopy
 
 
@@ -491,22 +491,26 @@ class _ActiveMaterial(_Material, DataMixin):
         """
         # Calculate the cutoff voltages for each curve
         voltages_at_max_capacity = []
+
         for curve in self._half_cell_curves:
             max_capacity_idx = np.argmax(curve[:, 0])
             voltage_at_max_capacity = curve[max_capacity_idx, 1]
             voltages_at_max_capacity.append(voltage_at_max_capacity)
 
+        # Round voltage cutoff for consistent comparison
+        rounded_voltage_cutoff = round(self._voltage_cutoff, 5)
+
         # If the voltage cutoff corresponds to a particular curve, then return that curve
-        if self._voltage_cutoff in voltages_at_max_capacity:
+        if rounded_voltage_cutoff in [round(v, 5) for v in voltages_at_max_capacity]:
             curve_idx = voltages_at_max_capacity.index(self._voltage_cutoff)
             half_cell_curve = self._half_cell_curves[curve_idx].copy()
 
         # If the voltage is between the second and third float in operating voltage range, then interpolate between the two curves
-        elif min(self._voltage_operation_window[1:]) < self._voltage_cutoff < max(self._voltage_operation_window[1:]):
+        elif round(min(self._voltage_operation_window[1:]), 5) <= rounded_voltage_cutoff <= round(max(self._voltage_operation_window[1:]), 5):
             half_cell_curve = self._interpolate_curve()
 
         # If the voltage cutoff is below the second float and above the first float in the operating voltage range, then interpolate between the two curves
-        elif min(self._voltage_operation_window[:2]) < self._voltage_cutoff < max(self._voltage_operation_window[:2]):
+        elif round(min(self._voltage_operation_window[:2]), 5) <= rounded_voltage_cutoff <= round(max(self._voltage_operation_window[:2]), 5):
             half_cell_curve = self._truncate_and_shift_curves()
 
         else:
@@ -727,8 +731,24 @@ class _ActiveMaterial(_Material, DataMixin):
         return self._irreversible_capacity_scaling
 
     @property
+    def irreversible_capacity_scaling_range(self) -> Tuple:
+        return 0.5, 1.5
+
+    @property
+    def irreversible_capacity_scaling_hard_range(self) -> Tuple:
+        return 0, 2
+
+    @property
     def reversible_capacity_scaling(self) -> float:
         return self._reversible_capacity_scaling
+    
+    @property
+    def reversible_capacity_scaling_range(self) -> Tuple:
+        return 0.5, 1.5
+    
+    @property
+    def reversible_capacity_scaling_hard_range(self) -> Tuple:
+        return 0, 2
 
     @reference.setter
     def reference(self, reference: str):
