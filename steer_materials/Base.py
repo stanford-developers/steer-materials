@@ -1,5 +1,5 @@
 from steer_core.Constants.Units import *
-from steer_core.Mixins.Validators import ValidationMixin
+from steer_core.Mixins.TypeChecker import ValidationMixin
 from steer_core.Mixins.Serializer import SerializerMixin
 
 from datetime import datetime as dt
