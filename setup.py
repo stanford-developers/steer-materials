@@ -7,11 +7,11 @@ init = root / "steer_materials" / "__init__.py"
 version = re.search(r'__version__\s*=\s*"([^"]+)"', init.read_text()).group(1)
 
 setup(
-    name='steer-materials',
-    version=version, 
-    description='Modelling energy storage from cell to site - STEER OpenCell Design',
-    author='Nicholas Siemons',
-    author_email='nsiemons@stanford.edu',
+    name="steer-materials",
+    version=version,
+    description="Modelling energy storage from cell to site - STEER OpenCell Design",
+    author="Nicholas Siemons",
+    author_email="nsiemons@stanford.edu",
     url="https://github.com/stanford-developers/steer-materials/",
     packages=find_packages(),
     include_package_data=True,
@@ -25,11 +25,9 @@ setup(
         "flask_caching==2.3.1",
     ],
     scripts=[],
-    classifiers=[ 
+    classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.10",
 )
-
-

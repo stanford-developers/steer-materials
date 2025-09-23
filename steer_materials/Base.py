@@ -9,16 +9,10 @@ import numpy as np
 
 class _Material(ValidationMixin, SerializerMixin):
 
-    def __init__(
-            self, 
-            name: str,
-            density: float, 
-            specific_cost: float,
-            color: str
-        ):
+    def __init__(self, name: str, density: float, specific_cost: float, color: str):
         """
         Metal object for encapsulation of the cell
-        
+
         Parameters
         ----------
         name : str
@@ -45,12 +39,12 @@ class _Material(ValidationMixin, SerializerMixin):
     @property
     def density(self):
         return round(self._density * (KG_TO_G / M_TO_CM**3), 2)
-    
+
     @property
     def density_range(self):
         return (
-            round(self._density_range[0] * (KG_TO_G / M_TO_CM**3), 2), 
-            round(self._density_range[1] * (KG_TO_G / M_TO_CM**3), 2)
+            round(self._density_range[0] * (KG_TO_G / M_TO_CM**3), 2),
+            round(self._density_range[1] * (KG_TO_G / M_TO_CM**3), 2),
         )
 
     @property
@@ -60,14 +54,14 @@ class _Material(ValidationMixin, SerializerMixin):
     @property
     def specific_cost(self):
         return self._specific_cost
-    
+
     @property
     def specific_cost_range(self):
         return (
-            round(self._specific_cost_range[0], 2), 
-            round(self._specific_cost_range[1], 2)
+            round(self._specific_cost_range[0], 2),
+            round(self._specific_cost_range[1], 2),
         )
-    
+
     @property
     def specific_cost_hard_range(self):
         return (0, 1000)
@@ -79,7 +73,7 @@ class _Material(ValidationMixin, SerializerMixin):
     @property
     def color(self):
         return self._color
-    
+
     @property
     def last_updated(self):
         return self._last_updated.strftime("%Y-%m-%d %H:%M:%S")
@@ -106,36 +100,20 @@ class _Material(ValidationMixin, SerializerMixin):
 
     def __str__(self):
         return f"{self.name}, {self.__class__.__name__}, {self.last_updated}"
-    
+
     def __repr__(self):
         return self.__str__()
-    
 
 
 class Metal(_Material):
 
-    def __init__(
-            self, 
-            name: str, 
-            density: float, 
-            specific_cost: float, 
-            color: str
-        ):
+    def __init__(self, name: str, density: float, specific_cost: float, color: str):
 
         super().__init__(name, density, specific_cost, color)
-
-
 
 
 class Solvent(_Material):
 
-    def __init__(
-            self, 
-            name: str, 
-            density: float, 
-            specific_cost: float, 
-            color: str
-        ):
+    def __init__(self, name: str, density: float, specific_cost: float, color: str):
 
         super().__init__(name, density, specific_cost, color)
-    
