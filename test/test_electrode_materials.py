@@ -2,7 +2,12 @@ import unittest
 from io import StringIO
 import pandas as pd
 
-from steer_materials.CellMaterials.Electrode import CathodeMaterial, AnodeMaterial, Binder, ConductiveAdditive
+from steer_materials.CellMaterials.Electrode import (
+    CathodeMaterial,
+    AnodeMaterial,
+    Binder,
+    ConductiveAdditive,
+)
 
 
 class TestLFPSingleCurve(unittest.TestCase):
@@ -11,7 +16,8 @@ class TestLFPSingleCurve(unittest.TestCase):
         """
         Set up
         """
-        half_cell_data = StringIO("""
+        half_cell_data = StringIO(
+            """
             Specific Capacity (mAh/g),Voltage (V),Step Name,Step_ID
             0.227014756,2.743703704,CC_Chg,1
             0.227014756,3.354074074,CC_Chg,1
@@ -112,37 +118,43 @@ class TestLFPSingleCurve(unittest.TestCase):
             150.2837684,2.820740741,CC_DChg,2
             151.1918275,2.755555556,CC_DChg,2
             151.8728717,2.696296296,CC_DChg,2
-        """)
+        """
+        )
 
         half_cell = (
-            pd
-            .read_csv(
+            pd.read_csv(
                 half_cell_data,
                 skiprows=2,
-                names=['specific_capacity', 'voltage', 'direction', 'id'],
-            ).drop(
-                columns=['id']
-            ).assign(
-                direction = lambda x: x['direction'].apply(lambda y: 'discharge' if 'CC_DChg' in y else 'charge' if 'CC_Chg' in y else None),
+                names=["specific_capacity", "voltage", "direction", "id"],
+            )
+            .drop(columns=["id"])
+            .assign(
+                direction=lambda x: x["direction"].apply(
+                    lambda y: (
+                        "discharge"
+                        if "CC_DChg" in y
+                        else "charge" if "CC_Chg" in y else None
+                    )
+                ),
             )
         )
 
         self.material = CathodeMaterial(
-            name = 'LFP',
-            reference = 'Li/Li+',
-            specific_cost = 6.00,
-            density = 3.6,
-            half_cell_curves = half_cell   
+            name="LFP",
+            reference="Li/Li+",
+            specific_cost=6.00,
+            density=3.6,
+            half_cell_curves=half_cell,
         )
 
         self.material2 = CathodeMaterial(
-            name = 'LFP',
-            reference = 'Li/Li+',
-            specific_cost = 6.00,
-            density = 3.6,
-            half_cell_curves = half_cell,
-            voltage_cutoff = 4.0,
-            reversible_capacity_scaling = 0.5
+            name="LFP",
+            reference="Li/Li+",
+            specific_cost=6.00,
+            density=3.6,
+            half_cell_curves=half_cell,
+            voltage_cutoff=4.0,
+            reversible_capacity_scaling=0.5,
         )
 
     def test_instantiation(self):
@@ -159,7 +171,7 @@ class TestLFPSingleCurve(unittest.TestCase):
         # figure2.show()
 
     def test_extrapolation_window_setter(self):
-        
+
         self.material.extrapolation_window = 0.5
         self.assertEqual(self.material.extrapolation_window, 0.5)
         self.assertEqual(self.material.voltage_cutoff_range, (3.6, 4.1))
@@ -173,15 +185,31 @@ class TestLFPSingleCurve(unittest.TestCase):
         data = self.material.half_cell_curve
         figure = self.material.plot_half_cell_curve()
 
-        self.assertEqual(round(data['Voltage (V)'].max(), 10), 4.0)
-        self.assertEqual(round(data.query('Direction == "discharge"')['Specific Capacity (mAh/g)'].min(), 2), 3.59)
-        self.assertEqual(round(data.query('Direction == "discharge"')['Voltage (V)'].min(), 2), 2.7)
-        self.assertEqual(round(data.query('Direction == "charge"')['Specific Capacity (mAh/g)'].max(), 2), 155.19)
+        self.assertEqual(round(data["Voltage (V)"].max(), 10), 4.0)
+        self.assertEqual(
+            round(
+                data.query('Direction == "discharge"')[
+                    "Specific Capacity (mAh/g)"
+                ].min(),
+                2,
+            ),
+            3.59,
+        )
+        self.assertEqual(
+            round(data.query('Direction == "discharge"')["Voltage (V)"].min(), 2), 2.7
+        )
+        self.assertEqual(
+            round(
+                data.query('Direction == "charge"')["Specific Capacity (mAh/g)"].max(),
+                2,
+            ),
+            155.19,
+        )
 
         # figure.show()
 
     def test_from_database(self):
-        self.material = CathodeMaterial.from_database('LFP')
+        self.material = CathodeMaterial.from_database("LFP")
         self.assertTrue(isinstance(self.material, CathodeMaterial))
 
     def test_irreversible_capacity_scaling(self):
@@ -194,10 +222,26 @@ class TestLFPSingleCurve(unittest.TestCase):
         data = self.material.half_cell_curve
         figure = self.material.plot_half_cell_curve()
 
-        self.assertEqual(round(data['Voltage (V)'].max(), 10), 4.0)
-        self.assertEqual(round(data.query('Direction == "discharge"')['Specific Capacity (mAh/g)'].min(), 2), 1.79)
-        self.assertEqual(round(data.query('Direction == "discharge"')['Voltage (V)'].min(), 2), 2.7)
-        self.assertEqual(round(data.query('Direction == "charge"')['Specific Capacity (mAh/g)'].max(), 2), 77.6)
+        self.assertEqual(round(data["Voltage (V)"].max(), 10), 4.0)
+        self.assertEqual(
+            round(
+                data.query('Direction == "discharge"')[
+                    "Specific Capacity (mAh/g)"
+                ].min(),
+                2,
+            ),
+            1.79,
+        )
+        self.assertEqual(
+            round(data.query('Direction == "discharge"')["Voltage (V)"].min(), 2), 2.7
+        )
+        self.assertEqual(
+            round(
+                data.query('Direction == "charge"')["Specific Capacity (mAh/g)"].max(),
+                2,
+            ),
+            77.6,
+        )
 
         # figure.show()
 
@@ -211,10 +255,26 @@ class TestLFPSingleCurve(unittest.TestCase):
         data = self.material.half_cell_curve
         figure = self.material.plot_half_cell_curve()
 
-        self.assertEqual(round(data['Voltage (V)'].max(), 10), 4)
-        self.assertEqual(round(data.query('Direction == "discharge"')['Specific Capacity (mAh/g)'].min(), 2), 79.39)
-        self.assertEqual(round(data.query('Direction == "discharge"')['Voltage (V)'].min(), 2), 2.7)
-        self.assertEqual(round(data.query('Direction == "charge"')['Specific Capacity (mAh/g)'].max(), 2), 155.19)
+        self.assertEqual(round(data["Voltage (V)"].max(), 10), 4)
+        self.assertEqual(
+            round(
+                data.query('Direction == "discharge"')[
+                    "Specific Capacity (mAh/g)"
+                ].min(),
+                2,
+            ),
+            79.39,
+        )
+        self.assertEqual(
+            round(data.query('Direction == "discharge"')["Voltage (V)"].min(), 2), 2.7
+        )
+        self.assertEqual(
+            round(
+                data.query('Direction == "charge"')["Specific Capacity (mAh/g)"].max(),
+                2,
+            ),
+            155.19,
+        )
 
         # figure.show()
 
@@ -223,10 +283,26 @@ class TestLFPSingleCurve(unittest.TestCase):
         data = self.material2.half_cell_curve
         figure = self.material2.plot_half_cell_curve()
 
-        self.assertEqual(round(data['Voltage (V)'].max(), 10), 4)
-        self.assertEqual(round(data.query('Direction == "discharge"')['Specific Capacity (mAh/g)'].min(), 2), 79.39)
-        self.assertEqual(round(data.query('Direction == "discharge"')['Voltage (V)'].min(), 2), 2.7)
-        self.assertEqual(round(data.query('Direction == "charge"')['Specific Capacity (mAh/g)'].max(), 2), 155.19)
+        self.assertEqual(round(data["Voltage (V)"].max(), 10), 4)
+        self.assertEqual(
+            round(
+                data.query('Direction == "discharge"')[
+                    "Specific Capacity (mAh/g)"
+                ].min(),
+                2,
+            ),
+            79.39,
+        )
+        self.assertEqual(
+            round(data.query('Direction == "discharge"')["Voltage (V)"].min(), 2), 2.7
+        )
+        self.assertEqual(
+            round(
+                data.query('Direction == "charge"')["Specific Capacity (mAh/g)"].max(),
+                2,
+            ),
+            155.19,
+        )
 
         # figure.show()
 
@@ -242,20 +318,37 @@ class TestLFPSingleCurve(unittest.TestCase):
         self.material.voltage_cutoff = 4
         self.material.reversible_capacity_scaling = 1
         self.material.irreversible_capacity_scaling = 1
-        
+
         data = self.material.half_cell_curve
 
-        self.assertEqual(round(data['Voltage (V)'].max(), 10), 4.0)
-        self.assertEqual(round(data.query('Direction == "discharge"')['Specific Capacity (mAh/g)'].min(), 2), 3.59)
-        self.assertEqual(round(data.query('Direction == "discharge"')['Voltage (V)'].min(), 2), 2.7)
-        self.assertEqual(round(data.query('Direction == "charge"')['Specific Capacity (mAh/g)'].max(), 2), 155.19)
+        self.assertEqual(round(data["Voltage (V)"].max(), 10), 4.0)
+        self.assertEqual(
+            round(
+                data.query('Direction == "discharge"')[
+                    "Specific Capacity (mAh/g)"
+                ].min(),
+                2,
+            ),
+            3.59,
+        )
+        self.assertEqual(
+            round(data.query('Direction == "discharge"')["Voltage (V)"].min(), 2), 2.7
+        )
+        self.assertEqual(
+            round(
+                data.query('Direction == "charge"')["Specific Capacity (mAh/g)"].max(),
+                2,
+            ),
+            155.19,
+        )
 
 
 class TestNMMMultiCurve(unittest.TestCase):
 
     def setUp(self):
-        
-        half_cell_data_1 = StringIO("""
+
+        half_cell_data_1 = StringIO(
+            """
             Specific Capacity (mAh/g),Voltage (V),Step Name,Step_ID
             0,2.925467626,CC_Chg,1
             0.93676815,2.908201439,CC_Chg,1
@@ -362,9 +455,11 @@ class TestNMMMultiCurve(unittest.TestCase):
             118.4074941,2.086330935,CC_DChg,2
             119.7189696,2.037985612,CC_DChg,2
             121.2177986,1.996546763,CC_DChg,2
-        """)
+        """
+        )
 
-        half_cell_data_2 = StringIO("""
+        half_cell_data_2 = StringIO(
+            """
             Specific Capacity (mAh/g),Voltage (V),Step Name,Step_ID
             0,2.873669065,CC_Chg,1
             1.12412178,2.863309353,CC_Chg,1
@@ -491,9 +586,11 @@ class TestNMMMultiCurve(unittest.TestCase):
             144.4496487,2.086330935,CC_DChg,2
             145.5737705,2.048345324,CC_DChg,2
             147.2599532,2,CC_DChg,2
-        """)
+        """
+        )
 
-        half_cell_data_3 = StringIO("""
+        half_cell_data_3 = StringIO(
+            """
             Specific Capacity (mAh/g),Voltage (V),Step Name,Step_ID
             0,2.839136691,CC_Chg,1
             2.06088993,2.842589928,CC_Chg,1
@@ -608,53 +705,69 @@ class TestNMMMultiCurve(unittest.TestCase):
             151.9437939,2.110503597,CC_DChg,2
             153.6299766,2.055251799,CC_DChg,2
             156.0655738,2.003453237,CC_DChg,2
-        """)
+        """
+        )
 
         half_cell_1 = (
-            pd
-            .read_csv(
+            pd.read_csv(
                 half_cell_data_1,
                 skiprows=2,
-                names=['specific_capacity', 'voltage', 'direction', 'id'],
-            ).drop(
-                columns=['id']
-            ).assign(
-                direction = lambda x: x['direction'].apply(lambda y: 'discharge' if 'CC_DChg' in y else 'charge' if 'CC_Chg' in y else None),
+                names=["specific_capacity", "voltage", "direction", "id"],
+            )
+            .drop(columns=["id"])
+            .assign(
+                direction=lambda x: x["direction"].apply(
+                    lambda y: (
+                        "discharge"
+                        if "CC_DChg" in y
+                        else "charge" if "CC_Chg" in y else None
+                    )
+                ),
             )
         )
 
         half_cell_2 = (
-            pd
-            .read_csv(
+            pd.read_csv(
                 half_cell_data_2,
                 skiprows=2,
-                names=['specific_capacity', 'voltage', 'direction', 'id'],
-            ).drop(
-                columns=['id']
-            ).assign(
-                direction = lambda x: x['direction'].apply(lambda y: 'discharge' if 'CC_DChg' in y else 'charge' if 'CC_Chg' in y else None),
+                names=["specific_capacity", "voltage", "direction", "id"],
+            )
+            .drop(columns=["id"])
+            .assign(
+                direction=lambda x: x["direction"].apply(
+                    lambda y: (
+                        "discharge"
+                        if "CC_DChg" in y
+                        else "charge" if "CC_Chg" in y else None
+                    )
+                ),
             )
         )
 
         half_cell_3 = (
-            pd
-            .read_csv(
+            pd.read_csv(
                 half_cell_data_3,
                 skiprows=2,
-                names=['specific_capacity', 'voltage', 'direction', 'id'],
-            ).drop(
-                columns=['id']
-            ).assign(
-                direction = lambda x: x['direction'].apply(lambda y: 'discharge' if 'CC_DChg' in y else 'charge' if 'CC_Chg' in y else None),
+                names=["specific_capacity", "voltage", "direction", "id"],
+            )
+            .drop(columns=["id"])
+            .assign(
+                direction=lambda x: x["direction"].apply(
+                    lambda y: (
+                        "discharge"
+                        if "CC_DChg" in y
+                        else "charge" if "CC_Chg" in y else None
+                    )
+                ),
             )
         )
 
         self.material = CathodeMaterial(
-            name = 'NMM',
-            half_cell_curves = [half_cell_1, half_cell_2, half_cell_3],
-            reference = 'Na/Na+',
-            density = 4.4, 
-            specific_cost = 1.1
+            name="NMM",
+            half_cell_curves=[half_cell_1, half_cell_2, half_cell_3],
+            reference="Na/Na+",
+            density=4.4,
+            specific_cost=1.1,
         )
 
     def test_instantiation(self):
@@ -662,16 +775,32 @@ class TestNMMMultiCurve(unittest.TestCase):
         self.assertTrue(self.material.voltage_cutoff_range == (3.9, 4.36))
 
     def test_voltage_setter_extrapolate(self):
-        
+
         self.material.voltage_cutoff = 4.1
         data = self.material.half_cell_curve
         figure = self.material.plot_half_cell_curve()
 
-        self.assertEqual(round(data['Voltage (V)'].max(), 10), 4.1)
-        self.assertEqual(round(data.query('Direction == "discharge"')['Specific Capacity (mAh/g)'].min(), 2), 1.24)
-        self.assertEqual(round(data.query('Direction == "discharge"')['Voltage (V)'].min(), 2), 2)
-        self.assertEqual(round(data.query('Direction == "charge"')['Specific Capacity (mAh/g)'].max(), 2), 122.46)
-                
+        self.assertEqual(round(data["Voltage (V)"].max(), 10), 4.1)
+        self.assertEqual(
+            round(
+                data.query('Direction == "discharge"')[
+                    "Specific Capacity (mAh/g)"
+                ].min(),
+                2,
+            ),
+            1.24,
+        )
+        self.assertEqual(
+            round(data.query('Direction == "discharge"')["Voltage (V)"].min(), 2), 2
+        )
+        self.assertEqual(
+            round(
+                data.query('Direction == "charge"')["Specific Capacity (mAh/g)"].max(),
+                2,
+            ),
+            122.46,
+        )
+
         # figure.show()
 
     def test_voltage_setter_interpolate(self):
@@ -680,10 +809,26 @@ class TestNMMMultiCurve(unittest.TestCase):
         data = self.material.half_cell_curve
         figure = self.material.plot_half_cell_curve()
 
-        self.assertEqual(round(data['Voltage (V)'].max(), 2), 4.20)
-        self.assertEqual(round(data.query('Direction == "discharge"')['Specific Capacity (mAh/g)'].min(), 2), 3.49)
-        self.assertEqual(round(data.query('Direction == "discharge"')['Voltage (V)'].min(), 2), 2.0)
-        self.assertEqual(round(data.query('Direction == "charge"')['Specific Capacity (mAh/g)'].max(), 2), 141.33)
+        self.assertEqual(round(data["Voltage (V)"].max(), 2), 4.20)
+        self.assertEqual(
+            round(
+                data.query('Direction == "discharge"')[
+                    "Specific Capacity (mAh/g)"
+                ].min(),
+                2,
+            ),
+            3.49,
+        )
+        self.assertEqual(
+            round(data.query('Direction == "discharge"')["Voltage (V)"].min(), 2), 2.0
+        )
+        self.assertEqual(
+            round(
+                data.query('Direction == "charge"')["Specific Capacity (mAh/g)"].max(),
+                2,
+            ),
+            141.33,
+        )
 
         # figure.show()
 
@@ -692,7 +837,8 @@ class TestHardCarbon(unittest.TestCase):
 
     def setUp(self):
 
-        half_cell_data = StringIO("""
+        half_cell_data = StringIO(
+            """
             Specific Capacity (mAh/g),Voltage (V),Step Name,Step_ID
             0,2.063123515,CC_DChg,1
             0,2.023708432,CC_DChg,1
@@ -873,27 +1019,33 @@ class TestHardCarbon(unittest.TestCase):
             330.1323023,1.675541865,CC_Chg,2
             330.1323023,1.636126781,CC_Chg,2
             331.0164822,1.984293349,CC_Chg,2
-        """)
+        """
+        )
 
         half_cell = (
-            pd
-            .read_csv(
+            pd.read_csv(
                 half_cell_data,
                 skiprows=2,
-                names=['specific_capacity', 'voltage', 'direction', 'id'],
-            ).drop(
-                columns=['id']
-            ).assign(
-                direction = lambda x: x['direction'].apply(lambda y: 'discharge' if 'CC_DChg' in y else 'charge' if 'CC_Chg' in y else None),
+                names=["specific_capacity", "voltage", "direction", "id"],
+            )
+            .drop(columns=["id"])
+            .assign(
+                direction=lambda x: x["direction"].apply(
+                    lambda y: (
+                        "discharge"
+                        if "CC_DChg" in y
+                        else "charge" if "CC_Chg" in y else None
+                    )
+                ),
             )
         )
 
         self.material = AnodeMaterial(
-            name = 'Hard Carbon',
-            half_cell_curves = [half_cell],
-            reference = 'Na/Na+',
-            density = 1.5, 
-            specific_cost = 7
+            name="Hard Carbon",
+            half_cell_curves=[half_cell],
+            reference="Na/Na+",
+            density=1.5,
+            specific_cost=7,
         )
 
     def test_instantiation(self):
@@ -903,7 +1055,7 @@ class TestHardCarbon(unittest.TestCase):
         self.assertTrue(isinstance(self.material, AnodeMaterial))
         self.assertEqual(self.material.voltage_cutoff_range, (0.05, 0))
         figure = self.material.plot_half_cell_curve()
-        
+
         # figure.show()
 
     def test_voltage_setter_extrapolate(self):
@@ -914,9 +1066,19 @@ class TestHardCarbon(unittest.TestCase):
         data = self.material.half_cell_curve
         figure = self.material.plot_half_cell_curve()
 
-        self.assertEqual(round(data['Voltage (V)'].min(), 10), 0)
-        self.assertEqual(round(data.query('Direction == "discharge"')['Specific Capacity (mAh/g)'].max(), 2), 358.61)
-        self.assertEqual(round(data.query('Direction == "discharge"')['Voltage (V)'].min(), 2), 0.0)
+        self.assertEqual(round(data["Voltage (V)"].min(), 10), 0)
+        self.assertEqual(
+            round(
+                data.query('Direction == "discharge"')[
+                    "Specific Capacity (mAh/g)"
+                ].max(),
+                2,
+            ),
+            358.61,
+        )
+        self.assertEqual(
+            round(data.query('Direction == "discharge"')["Voltage (V)"].min(), 2), 0.0
+        )
 
         # figure.show()
 
@@ -928,10 +1090,26 @@ class TestHardCarbon(unittest.TestCase):
         data = self.material.half_cell_curve
         figure = self.material.plot_half_cell_curve()
 
-        self.assertEqual(round(data['Voltage (V)'].max(), 2), 2.06)
-        self.assertEqual(round(data.query('Direction == "discharge"')['Specific Capacity (mAh/g)'].min(), 2), 194.24)
-        self.assertEqual(round(data.query('Direction == "discharge"')['Voltage (V)'].min(), 2), 0)
-        self.assertEqual(round(data.query('Direction == "charge"')['Specific Capacity (mAh/g)'].max(), 2), 359.75)
+        self.assertEqual(round(data["Voltage (V)"].max(), 2), 2.06)
+        self.assertEqual(
+            round(
+                data.query('Direction == "discharge"')[
+                    "Specific Capacity (mAh/g)"
+                ].min(),
+                2,
+            ),
+            194.24,
+        )
+        self.assertEqual(
+            round(data.query('Direction == "discharge"')["Voltage (V)"].min(), 2), 0
+        )
+        self.assertEqual(
+            round(
+                data.query('Direction == "charge"')["Specific Capacity (mAh/g)"].max(),
+                2,
+            ),
+            359.75,
+        )
 
         # figure.show()
 
@@ -946,7 +1124,7 @@ class TestBinder(unittest.TestCase):
             name=self.name,
             specific_cost=self.specific_cost,
             density=self.density,
-            color=self.color
+            color=self.color,
         )
 
     def test_instantiation(self):
@@ -967,7 +1145,7 @@ class TestConductiveAdditive(unittest.TestCase):
             name=self.name,
             specific_cost=self.specific_cost,
             density=self.density,
-            color=self.color
+            color=self.color,
         )
 
     def test_instantiation(self):
@@ -976,5 +1154,3 @@ class TestConductiveAdditive(unittest.TestCase):
         self.assertEqual(self.additive.specific_cost, self.specific_cost)
         self.assertEqual(self.additive.density, self.density)
         self.assertEqual(self.additive.color, self.color)
-
-

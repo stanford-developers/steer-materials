@@ -1,7 +1,12 @@
-
 class Salt:
 
-    def __init__(self, name: str, formula: str, specific_cost: float = None, stoichiometry: dict = None):
+    def __init__(
+        self,
+        name: str,
+        formula: str,
+        specific_cost: float = None,
+        stoichiometry: dict = None,
+    ):
         """
         Initialize an object that represents an ion
         :param name: str: name of the material
@@ -13,7 +18,7 @@ class Salt:
         self._formula = formula
         self._specific_cost = specific_cost
         self._stoichiometry = stoichiometry
-    
+
     @property
     def stoichiometry(self):
         return self._stoichiometry
@@ -23,8 +28,6 @@ class Salt:
             return f"{self.name}"
         else:
             return f"Salt"
-        
+
     def __repr__(self):
         return self.__str__()
-            
-    
