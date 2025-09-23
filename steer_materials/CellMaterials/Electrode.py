@@ -24,7 +24,7 @@ class _ActiveMaterial(_Material, DataMixin):
             half_cell_curves: Union[List[pd.DataFrame], pd.DataFrame],
             color: Optional[str] = '#2c2c2c',
             voltage_cutoff: Optional[float] = None,
-            extrapolation_window: Optional[float] = 0.2,
+            extrapolation_window: Optional[float] = 0.4,
             reversible_capacity_scaling: Optional[float] = 1.0,
             irreversible_capacity_scaling: Optional[float] = 1.0
         ) -> None:
@@ -732,7 +732,7 @@ class _ActiveMaterial(_Material, DataMixin):
 
     @property
     def irreversible_capacity_scaling_range(self) -> Tuple:
-        return 0.5, 1.5
+        return 0.8, 1.1
 
     @property
     def irreversible_capacity_scaling_hard_range(self) -> Tuple:
@@ -744,7 +744,7 @@ class _ActiveMaterial(_Material, DataMixin):
     
     @property
     def reversible_capacity_scaling_range(self) -> Tuple:
-        return 0.5, 1.5
+        return 0.8, 1.1
     
     @property
     def reversible_capacity_scaling_hard_range(self) -> Tuple:
@@ -762,7 +762,7 @@ class _ActiveMaterial(_Material, DataMixin):
         
         :param scaling: float: scaling factor for reversible capacity
         """
-        self.validate_fraction(scaling, 'Reversible capacity scaling')
+        self.validate_positive_float(scaling, 'Reversible capacity scaling')
         
         original_scaling = self._reversible_capacity_scaling if hasattr(self, '_reversible_capacity_scaling') else 1.0
         self._reversible_capacity_scaling = scaling
@@ -818,7 +818,7 @@ class _ActiveMaterial(_Material, DataMixin):
         
         :param scaling: float: scaling factor for irreversible capacity
         """
-        self.validate_fraction(scaling, 'Irreversible capacity scaling')
+        self.validate_positive_float(scaling, 'Irreversible capacity scaling')
         original_scaling = self._irreversible_capacity_scaling if hasattr(self, '_irreversible_capacity_scaling') else 1.0
         self._irreversible_capacity_scaling = float(scaling)
 
@@ -898,7 +898,7 @@ class CathodeMaterial(_ActiveMaterial):
             half_cell_curves: Union[List[pd.DataFrame], pd.DataFrame],
             color: str = '#2c2c2c',
             voltage_cutoff: float = None,
-            extrapolation_window: float = 0.2,
+            extrapolation_window: float = 0.4,
             reversible_capacity_scaling: float = 1.0,
             irreversible_capacity_scaling: float = 1.0
         ):

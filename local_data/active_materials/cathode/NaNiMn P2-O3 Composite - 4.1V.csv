@@ -1,4 +1,5 @@
 Specific Capacity (mAh/g),Voltage (V),Step Name,Step_ID
+0,2,CC_Chg,1
 0,2.925467626,CC_Chg,1
 0.93676815,2.908201439,CC_Chg,1
 2.43559719,2.908201439,CC_Chg,1
