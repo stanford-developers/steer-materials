@@ -151,13 +151,22 @@ class SeparatorMaterial(_Material):
         color : str
             Color of the material.
         """
-        super().__init__(name, density, specific_cost, color)
+        super().__init__(
+            name, 
+            density, 
+            specific_cost, 
+            color
+        )
 
         self.porosity = porosity
 
     @property
     def porosity(self):
         return round(self._porosity * 100, 2)
+    
+    @property
+    def porosity_range(self):
+        return (0, 100)
 
     @porosity.setter
     def porosity(self, porosity: float) -> None:
