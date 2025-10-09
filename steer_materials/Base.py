@@ -1,13 +1,18 @@
 from steer_core.Constants.Units import *
 from steer_core.Mixins.TypeChecker import ValidationMixin
 from steer_core.Mixins.Serializer import SerializerMixin
+from steer_core.Mixins.Dunder import DunderMixin
 
 from datetime import datetime as dt
 
 import numpy as np
 
 
-class _Material(ValidationMixin, SerializerMixin):
+class _Material(
+    ValidationMixin, 
+    SerializerMixin,
+    DunderMixin
+    ):
 
     def __init__(self, name: str, density: float, specific_cost: float, color: str):
         """
@@ -98,12 +103,6 @@ class _Material(ValidationMixin, SerializerMixin):
         self.validate_string(name, "Name")
         self._name = name
 
-    def __str__(self):
-        return f"{self.name}, {self.__class__.__name__}, {self.last_updated}"
-
-    def __repr__(self):
-        return self.__str__()
-
 
 class Metal(_Material):
 
@@ -117,3 +116,4 @@ class Solvent(_Material):
     def __init__(self, name: str, density: float, specific_cost: float, color: str):
 
         super().__init__(name, density, specific_cost, color)
+

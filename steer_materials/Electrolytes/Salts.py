@@ -1,4 +1,6 @@
-class Salt:
+from steer_core.Mixins.Dunder import DunderMixin
+
+class Salt(DunderMixin):
 
     def __init__(
         self,
@@ -23,11 +25,3 @@ class Salt:
     def stoichiometry(self):
         return self._stoichiometry
 
-    def __str__(self):
-        if self.name != None:
-            return f"{self.name}"
-        else:
-            return f"Salt"
-
-    def __repr__(self):
-        return self.__str__()

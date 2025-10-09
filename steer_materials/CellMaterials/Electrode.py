@@ -573,7 +573,7 @@ class _ActiveMaterial(_Material, DataMixin):
         self._half_cell_curve = self._half_cell_curves[max_index].copy()
 
         # get the voltage at maximum specific capacity
-        self._cutoff_voltage = self._half_cell_curve[
+        self._voltage_cutoff = self._half_cell_curve[
             self._half_cell_curve[:, 0] == np.max(self._half_cell_curve[:, 0]), 1
         ][0]
 
@@ -926,32 +926,6 @@ class _ActiveMaterial(_Material, DataMixin):
         self.validate_positive_float(window, "Extrapolation window")
         self._extrapolation_window = abs(float(window))
 
-    def __lt__(self, other):
-
-        if not isinstance(other, _ActiveMaterial):
-            raise ValueError("Can only compare ActiveMaterial objects together")
-
-        if self._name is not None and other._name is not None:
-            if self._name < other._name:
-                return True
-            elif self._name > other._name:
-                return False
-
-        return self._time_stamp < other._time_stamp
-
-    def __gt__(self, other):
-
-        if not isinstance(other, _ActiveMaterial):
-            raise ValueError("Can only compare ActiveMaterial objects together")
-
-        if self._name is not None and other._name is not None:
-            if self._name > other._name:
-                return True
-            elif self._name < other._name:
-                return False
-
-        return self._time_stamp > other._time_stamp
-
 
 class CathodeMaterial(_ActiveMaterial):
 
@@ -1039,7 +1013,10 @@ class CathodeMaterial(_ActiveMaterial):
 
         :return: float: minimum extrapolated voltage of the half cell curves
         """
-        return float(round(self._minimum_extrapolated_voltage, 2))
+        try:
+            return float(round(self._minimum_extrapolated_voltage, 2))
+        except Exception:
+            return None
 
 
 class AnodeMaterial(_ActiveMaterial):

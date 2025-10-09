@@ -1,7 +1,8 @@
 from steer_core.Constants.Units import *
+from steer_core.Mixins.Dunder import DunderMixin
 
 
-class Electrolyte:
+class Electrolyte(DunderMixin):
 
     def __init__(self, specific_cost: float, density: float, name: str = "Electrolyte"):
         """
@@ -52,8 +53,3 @@ class Electrolyte:
     def density(self):
         return round(self._density * (KG_TO_G / M_TO_CM**3), 2)
 
-    def __str__(self):
-        return f"{self.name}"
-
-    def __repr__(self):
-        return self.__str__()
