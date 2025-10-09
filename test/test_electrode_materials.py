@@ -162,13 +162,17 @@ class TestLFPSingleCurve(unittest.TestCase):
         Test instantiation
         """
         self.assertTrue(isinstance(self.material, CathodeMaterial))
-        self.assertEqual(self.material.voltage_cutoff_range, (3.9, 4.1))
+        self.assertEqual(self.material.voltage_cutoff_range, (3.7, 4.1))
 
         figure1 = self.material.plot_half_cell_curve()
         figure2 = self.material.plot_curves()
 
         # figure1.show()
         # figure2.show()
+
+    def test_equality(self):
+        self.assertTrue(self.material == self.material)
+        self.assertTrue(self.material != self.material2)
 
     def test_extrapolation_window_setter(self):
 
@@ -772,7 +776,7 @@ class TestNMMMultiCurve(unittest.TestCase):
 
     def test_instantiation(self):
         self.assertIsInstance(self.material, CathodeMaterial)
-        self.assertTrue(self.material.voltage_cutoff_range == (3.9, 4.36))
+        self.assertTrue(self.material.voltage_cutoff_range == (3.7, 4.36))
 
     def test_voltage_setter_extrapolate(self):
 
