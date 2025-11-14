@@ -212,7 +212,7 @@ class SeparatorMaterial(_Material):
 
 class TapeMaterial(_Material):
     """
-    Materials from which separators are made.
+    Materials from which tapes are made.
     """
 
     def __init__(
@@ -228,7 +228,7 @@ class TapeMaterial(_Material):
         Parameters
         ----------
         name : str
-            Name of the separator material.
+            Name of the tape material.
         density : float
             Density of the material in g/cm^3.
         specific_cost : float

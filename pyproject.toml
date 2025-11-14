@@ -31,10 +31,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "pandas==2.1.4",
-    "numpy==1.26.4",
-    "datetime==5.5",
-    "plotly==6.2.0",
+    "steer-core==0.1.25",
 ]
 
 [project.optional-dependencies]
