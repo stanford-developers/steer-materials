@@ -1,55 +1,16 @@
 from steer_core.Constants.Units import *
-from steer_core.Mixins.Dunder import DunderMixin
+from steer_materials.Base import _Material
 
 
-class Electrolyte(DunderMixin):
+class Electrolyte(_Material):
 
-    def __init__(self, specific_cost: float, density: float, name: str = "Electrolyte"):
-        """
-        Initialize an object that represents an electrolyte
+    def __init__(
+            self, 
+            name: str, 
+            density: float, 
+            specific_cost: float, 
+            color: str
+        ):
 
-        :param name: str: name of the material
-        :param specific_cost: float: specific cost of the material $/kg
-        :param density: float: density of the material in g/cm^3
-        """
-        self._name = name
-        self._specific_cost = specific_cost
-        self._density = density * (G_TO_KG / CM_TO_M**3)
-
-    @property
-    def name(self):
-        return self._name
-
-    @property
-    def formula(self):
-        return self._formula
-
-    @property
-    def specific_cost(self):
-        return self._specific_cost
-
-    @property
-    def mass(self):
-        try:
-            return round(self._mass * KG_TO_G, 2)
-        except AttributeError:
-            return AttributeError("Mass not calculated yet")
-
-    @property
-    def volume(self):
-        try:
-            return round(self._volume * M_TO_CM**3, 2)
-        except AttributeError:
-            return AttributeError("Volume not calculated yet")
-
-    @property
-    def cost(self):
-        try:
-            return self._cost
-        except AttributeError:
-            return AttributeError("Cost not calculated yet")
-
-    @property
-    def density(self):
-        return round(self._density * (KG_TO_G / M_TO_CM**3), 2)
+        super().__init__(name, density, specific_cost, color)
 

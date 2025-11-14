@@ -207,3 +207,72 @@ class SeparatorMaterial(_Material):
         string_data = data["object"].iloc[0]
         material = SerializerMixin.deserialize(string_data)
         return material
+
+
+
+class TapeMaterial(_Material):
+    """
+    Materials from which separators are made.
+    """
+
+    def __init__(
+        self,
+        name: str,
+        density: float,
+        specific_cost: float,
+        color: str,
+    ):
+        """
+        Separator material for encapsulation of the cell
+
+        Parameters
+        ----------
+        name : str
+            Name of the separator material.
+        density : float
+            Density of the material in g/cm^3.
+        specific_cost : float
+            Specific cost of the material in $/kg.
+        color : str
+            Color of the material.
+        """
+        super().__init__(
+            name, 
+            density, 
+            specific_cost, 
+            color
+        )
+
+    @staticmethod
+    def from_database(name) -> "TapeMaterial":
+        """
+        Pull object from the database.
+
+        Parameters
+        ----------
+        name : str
+            Name of the tape material.
+
+        Returns
+        -------
+        TapeMaterial: Instance of the class.
+        Raises
+        ------
+        ValueError: If the material is not found in the database.
+        """
+        database = DataManager()
+
+        available_materials = database.get_unique_values("tape_materials", "name")
+
+        if name not in available_materials:
+            raise ValueError(
+                f"Material '{name}' not found in the database. Available materials: {available_materials}"
+            )
+
+        data = database.get_data(table_name="tape_materials").query(
+            f"name == '{name}'"
+        )
+
+        string_data = data["object"].iloc[0]
+        material = SerializerMixin.deserialize(string_data)
+        return material

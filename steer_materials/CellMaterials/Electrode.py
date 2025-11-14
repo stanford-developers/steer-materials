@@ -9,6 +9,7 @@ from steer_materials.Base import _Material
 import pandas as pd
 import numpy as np
 import plotly.express as px
+from plotly import graph_objects as go
 from typing import List, Tuple, Union, Optional
 from copy import deepcopy
 
@@ -788,6 +789,18 @@ class _ActiveMaterial(_Material, DataMixin):
     @property
     def reversible_capacity_scaling_hard_range(self) -> Tuple:
         return 0, 2
+
+    @property
+    def half_cell_curve_trace(self) -> go.Scatter:
+
+        return go.Scatter(
+            x=self.half_cell_curve["Specific Capacity (mAh/g)"],
+            y=self.half_cell_curve["Voltage (V)"],
+            name=self.name,
+            line=dict(color=self._color, width=2),
+            mode="lines",
+            hovertemplate="<b>%{fullData.name}</b><br>" + "Capacity: %{x:.2f} mAh/g<br>" + "Voltage: %{y:.3f} V<br>" + "<i>Individual Material</i><extra></extra>",
+        )
 
     @reference.setter
     def reference(self, reference: str):
