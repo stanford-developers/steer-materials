@@ -58,7 +58,7 @@ class _Material(
 
     @property
     def specific_cost(self):
-        return self._specific_cost
+        return round(self._specific_cost, 2)
 
     @property
     def specific_cost_range(self):
