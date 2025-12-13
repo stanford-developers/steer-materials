@@ -10,8 +10,8 @@ import numpy as np
 
 class _Material(
     ValidationMixin, 
-    SerializerMixin,
-    DunderMixin
+    DunderMixin,
+    SerializerMixin
     ):
 
     def __init__(self, name: str, density: float, specific_cost: float, color: str):
@@ -43,13 +43,13 @@ class _Material(
 
     @property
     def density(self):
-        return round(self._density * (KG_TO_G / M_TO_CM**3), 2)
+        return np.round(self._density * (KG_TO_G / M_TO_CM**3), 2)
 
     @property
     def density_range(self):
         return (
-            round(self._density_range[0] * (KG_TO_G / M_TO_CM**3), 2),
-            round(self._density_range[1] * (KG_TO_G / M_TO_CM**3), 2),
+            np.round(self._density_range[0] * (KG_TO_G / M_TO_CM**3), 2),
+            np.round(self._density_range[1] * (KG_TO_G / M_TO_CM**3), 2),
         )
 
     @property
@@ -58,13 +58,13 @@ class _Material(
 
     @property
     def specific_cost(self):
-        return self._specific_cost
+        return np.round(self._specific_cost, 2)
 
     @property
     def specific_cost_range(self):
         return (
-            round(self._specific_cost_range[0], 2),
-            round(self._specific_cost_range[1], 2),
+            np.round(self._specific_cost_range[0], 2),
+            np.round(self._specific_cost_range[1], 2),
         )
 
     @property
@@ -90,13 +90,32 @@ class _Material(
 
     @density.setter
     def density(self, density: float) -> None:
+
+        # validate input 
         self.validate_positive_float(density, "Density")
+
+        # convert and set
         self._density = density * G_TO_KG / CM_TO_M**3
+
+        # If this is a volumed material and volume is set, recalculate mass
+        if hasattr(self, '_volume') and self._volume is not None:
+            self._mass = self._volume * self._density
+            if hasattr(self, '_cost'):
+                self._cost = self._mass * self._specific_cost
 
     @specific_cost.setter
     def specific_cost(self, specific_cost: float) -> None:
+
+        # validate input
         self.validate_positive_float(specific_cost, "Specific Cost")
+        
+        # set value
         self._specific_cost = specific_cost
+        
+        # If this is a volumed material with mass, recalculate cost
+        if hasattr(self, '_mass') and self._mass is not None:
+            if hasattr(self, '_cost'):
+                self._cost = self._mass * self._specific_cost
 
     @name.setter
     def name(self, name: str) -> None:
@@ -116,4 +135,87 @@ class Solvent(_Material):
     def __init__(self, name: str, density: float, specific_cost: float, color: str):
 
         super().__init__(name, density, specific_cost, color)
+
+
+class _VolumedMaterialMixin:
+    """
+    Mixin for materials that optionally track volume (cm^3) or mass (kg).
+    Cost ($) is always derived from mass and specific_cost.
+    """
+
+    def __init__(
+            self, 
+            *, 
+            volume=None, 
+            mass=None, 
+            **kwargs
+        ):
+
+        super().__init__(**kwargs)
+
+        # Check that only one of volume or mass is provided
+        provided = sum([volume is not None, mass is not None])
+        if provided > 1:
+            raise ValueError(
+                "Only one of 'volume' or 'mass' can be provided during initialization. "
+                f"Received: volume={volume}, mass={mass}"
+            )
+
+        self._volume = None
+        self._mass = None
+        self._cost = None
+
+        if volume is not None:
+            self.volume = volume
+        elif mass is not None:
+            self.mass = mass
+
+    @property
+    def volume(self):
+        if hasattr(self, '_volume') and self._volume is not None:
+            return np.round(self._volume * (M_TO_CM**3), 4)
+        else:
+            return None
+        
+    @property
+    def mass(self):
+        if hasattr(self, '_mass') and self._mass is not None:
+            return np.round(self._mass * KG_TO_G, 2)
+        else:
+            return None
+        
+    @property
+    def cost(self):
+        if hasattr(self, '_cost') and self._cost is not None:
+            return np.round(self._cost, 2)
+        else:
+            return None
+
+    
+    @volume.setter
+    def volume(self, value):
+        
+        if value is not None:
+            ValidationMixin.validate_positive_float(value, "Volume")
+            self._volume = value * CM_TO_M**3
+            self._mass = self._volume * self._density
+            self._cost = self._mass * self._specific_cost
+        else:
+            self._volume = None
+            self._mass = None
+            self._cost = None
+
+    @mass.setter
+    def mass(self, value):
+
+        if value is not None:
+            ValidationMixin.validate_positive_float(value, "Mass")
+            self._mass = value * G_TO_KG
+            self._volume = self._mass / self._density
+            self._cost = self._mass * self._specific_cost
+        else:
+            self._volume = None
+            self._mass = None
+            self._cost = None
+
 
