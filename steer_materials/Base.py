@@ -10,8 +10,8 @@ import numpy as np
 
 class _Material(
     ValidationMixin, 
-    SerializerMixin,
-    DunderMixin
+    DunderMixin,
+    SerializerMixin
     ):
 
     def __init__(self, name: str, density: float, specific_cost: float, color: str):
@@ -43,13 +43,13 @@ class _Material(
 
     @property
     def density(self):
-        return round(self._density * (KG_TO_G / M_TO_CM**3), 2)
+        return np.round(self._density * (KG_TO_G / M_TO_CM**3), 2)
 
     @property
     def density_range(self):
         return (
-            round(self._density_range[0] * (KG_TO_G / M_TO_CM**3), 2),
-            round(self._density_range[1] * (KG_TO_G / M_TO_CM**3), 2),
+            np.round(self._density_range[0] * (KG_TO_G / M_TO_CM**3), 2),
+            np.round(self._density_range[1] * (KG_TO_G / M_TO_CM**3), 2),
         )
 
     @property
@@ -58,13 +58,13 @@ class _Material(
 
     @property
     def specific_cost(self):
-        return round(self._specific_cost, 2)
+        return np.round(self._specific_cost, 2)
 
     @property
     def specific_cost_range(self):
         return (
-            round(self._specific_cost_range[0], 2),
-            round(self._specific_cost_range[1], 2),
+            np.round(self._specific_cost_range[0], 2),
+            np.round(self._specific_cost_range[1], 2),
         )
 
     @property
@@ -173,21 +173,21 @@ class _VolumedMaterialMixin:
     @property
     def volume(self):
         if hasattr(self, '_volume') and self._volume is not None:
-            return round(self._volume * (M_TO_CM**3), 4)
+            return np.round(self._volume * (M_TO_CM**3), 4)
         else:
             return None
         
     @property
     def mass(self):
         if hasattr(self, '_mass') and self._mass is not None:
-            return round(self._mass * KG_TO_G, 2)
+            return np.round(self._mass * KG_TO_G, 2)
         else:
             return None
         
     @property
     def cost(self):
         if hasattr(self, '_cost') and self._cost is not None:
-            return round(self._cost, 2)
+            return np.round(self._cost, 2)
         else:
             return None
 
