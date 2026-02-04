@@ -173,7 +173,7 @@ class _VolumedMaterialMixin:
     @property
     def volume(self):
         if hasattr(self, '_volume') and self._volume is not None:
-            return np.round(self._volume * (M_TO_CM**3), 4)
+            return np.round(self._volume * (M_TO_CM**3), 2)
         else:
             return None
         
