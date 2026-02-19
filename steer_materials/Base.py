@@ -2,6 +2,7 @@ from steer_core.Constants.Units import *
 from steer_core.Mixins.TypeChecker import ValidationMixin
 from steer_core.Mixins.Serializer import SerializerMixin
 from steer_core.Mixins.Dunder import DunderMixin
+from steer_core.Mixins.Propagation import PropagationMixin
 
 from datetime import datetime as dt
 
@@ -10,6 +11,7 @@ import numpy as np
 
 class _Material(
     ValidationMixin, 
+    PropagationMixin,
     DunderMixin,
     SerializerMixin
     ):
