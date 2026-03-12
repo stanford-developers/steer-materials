@@ -5,3 +5,4 @@ scripts/
 *.DS_Store
 dist/
 Archive/
+app_builds/
