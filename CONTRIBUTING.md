@@ -2,6 +2,14 @@
 
 Thank you for your interest in contributing to steer-materials! This document provides guidelines and instructions for contributing.
 
+## Contributor License Agreement (CLA)
+
+**Before your first contribution can be merged, you must sign our [Contributor License Agreement](CLA.md).**
+
+STEER Materials is dual-licensed under AGPL-3.0 (open source) and a separate commercial license. The CLA grants the maintainer the right to distribute your contributions under both licenses. Without a signed CLA, we cannot accept your pull request.
+
+When you open a pull request, a bot will comment with instructions to sign. Simply reply with the required statement and the check will pass automatically.
+
 ## Reporting Bugs
 
 If you find a bug, please open an issue on [GitHub Issues](https://github.com/stanford-developers/steer-materials/issues) with:
@@ -77,3 +85,7 @@ Feature requests are welcome. Please open an issue describing:
 ## Code of Conduct
 
 This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
+
+## License
+
+By contributing, you agree that your contributions will be licensed under the [AGPL-3.0](LICENCE.txt) license and, per the CLA, may also be distributed under the project's commercial license.
