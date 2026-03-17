@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2024-2026 Nicholas Siemons and Adrian Yao
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 from steer_core.Constants.Units import *
 from steer_core.Mixins.TypeChecker import ValidationMixin
 from steer_core.Mixins.Serializer import SerializerMixin
