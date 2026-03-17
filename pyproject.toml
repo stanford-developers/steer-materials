@@ -10,7 +10,8 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = {file = "LICENSE"}
 authors = [
-    {name = "Nicholas Siemons", email = "nsiemons@stanford.edu"}
+    {name = "Nicholas Siemons", email = "nsiemons@stanford.edu"},
+    {name = "Adrian Yao"}
 ]
 maintainers = [
     {name = "Nicholas Siemons", email = "nsiemons@stanford.edu"}
@@ -20,7 +21,7 @@ classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
-    "License :: Other/Proprietary License",
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
