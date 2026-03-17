@@ -51,7 +51,7 @@ steer-materials/
 ├── docs/                  # MkDocs documentation (this site)
 ├── .github/workflows/     # CI: tests + linting
 ├── pyproject.toml         # Build config, dependencies, tool settings
-├── LICENSE                # AGPL-3.0-or-later
+├── LICENCE.txt            # Dual license (AGPL-3.0 + commercial)
 ├── CITATION.cff           # Citation metadata
 ├── CONTRIBUTING.md        # Contribution guidelines
 └── CODE_OF_CONDUCT.md     # Contributor Covenant v2.1
