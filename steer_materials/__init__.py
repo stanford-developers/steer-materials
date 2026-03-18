@@ -1,5 +1,5 @@
 # SPDX-FileCopyrightText: 2024-2026 Nicholas Siemons
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-__version__ = "0.1.38"
+__version__ = "0.1.39"
 
