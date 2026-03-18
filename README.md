@@ -58,15 +58,15 @@ Full documentation for the STEER ecosystem is available at the [STEER documentat
 
 Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
+## Citation
+
+If you use this software in your research, please cite it using the metadata in [CITATION.cff](CITATION.cff).
+
 ## License
 
 This project is dual-licensed:
 
-1. **Open source** — [GNU Affero General Public License v3.0](https://www.gnu.org/licenses/agpl-3.0) (AGPL-3.0)
+1. **Open source** — [GNU Affero General Public License v3.0](https://www.gnu.org/licenses/agpl-3.0) (AGPL-3.0-or-later)
 2. **Commercial** — A separate commercial license is available for use without AGPL-3.0 copyleft requirements. Contact [nsiemons@stanford.edu](mailto:nsiemons@stanford.edu) for details.
 
 See [LICENCE.txt](LICENCE.txt) for full terms.
-
-## Citation
-
-If you use this software in your research, please cite it using the metadata in [CITATION.cff](CITATION.cff).
