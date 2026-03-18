@@ -9,11 +9,11 @@ authors:
     family-names: Siemons
     email: nsiemons@stanford.edu
     affiliation: Stanford University
-  - given-names: Adrian
-    family-names: Yao
+    orcid: https://orcid.org/0000-0002-0755-3981
 repository-code: https://github.com/stanford-developers/steer-materials
 license: AGPL-3.0-or-later
-version: 0.1.38
+version: 0.1.39
+doi: 
 date-released: '2026-03-17'
 keywords:
   - battery
