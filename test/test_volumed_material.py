@@ -34,14 +34,14 @@ class TestVolumedMaterialInit:
     """Tests for _VolumedMaterialMixin initialization."""
 
     def test_volume_init_derives_mass_and_cost(self, volumed_al):
-        assert volumed_al.volume == 100.0
-        assert volumed_al.mass == 270.0
-        assert volumed_al.cost == 0.68
+        assert volumed_al.volume == pytest.approx(100.0, rel=1e-10)
+        assert volumed_al.mass == pytest.approx(270.0, rel=1e-10)
+        assert volumed_al.cost == pytest.approx(0.675, abs=1e-5)
 
     def test_mass_init_derives_volume_and_cost(self, mass_al):
-        assert mass_al.volume == 100.0
-        assert mass_al.mass == 270.0
-        assert mass_al.cost == 0.68
+        assert mass_al.volume == pytest.approx(100.0, rel=1e-10)
+        assert mass_al.mass == pytest.approx(270.0, rel=1e-10)
+        assert mass_al.cost == pytest.approx(0.675, abs=1e-5)
 
     def test_no_volume_or_mass_gives_none(self, bare_al):
         assert bare_al.volume is None
@@ -65,15 +65,15 @@ class TestVolumedMaterialSetters:
 
     def test_set_volume(self, bare_al):
         bare_al.volume = 100.0
-        assert bare_al.volume == 100.0
-        assert bare_al.mass == 270.0
-        assert bare_al.cost == 0.68
+        assert bare_al.volume == pytest.approx(100.0, rel=1e-10)
+        assert bare_al.mass == pytest.approx(270.0, rel=1e-10)
+        assert bare_al.cost == pytest.approx(0.675, abs=1e-5)
 
     def test_set_mass(self, bare_al):
         bare_al.mass = 270.0
-        assert bare_al.volume == 100.0
-        assert bare_al.mass == 270.0
-        assert bare_al.cost == 0.68
+        assert bare_al.volume == pytest.approx(100.0, rel=1e-10)
+        assert bare_al.mass == pytest.approx(270.0, rel=1e-10)
+        assert bare_al.cost == pytest.approx(0.675, abs=1e-5)
 
     def test_set_volume_to_none_clears_all(self, volumed_al):
         volumed_al.volume = None
@@ -110,16 +110,16 @@ class TestVolumedMaterialPropagation:
     def test_density_change_updates_mass_and_cost(self, volumed_al):
         # volume=100 cm³, density 2.7→5.0 g/cm³
         volumed_al.density = 5.0
-        assert volumed_al.volume == 100.0
-        assert volumed_al.mass == 500.0
-        assert volumed_al.cost == 1.25
+        assert volumed_al.volume == pytest.approx(100.0, rel=1e-10)
+        assert volumed_al.mass == pytest.approx(500.0, rel=1e-10)
+        assert volumed_al.cost == pytest.approx(1.25, rel=1e-10)
 
     def test_specific_cost_change_updates_cost(self, volumed_al):
         # mass=270g, specific_cost 2.50→5.0 $/kg
         volumed_al.specific_cost = 5.0
-        assert volumed_al.volume == 100.0
-        assert volumed_al.mass == 270.0
-        assert volumed_al.cost == 1.35
+        assert volumed_al.volume == pytest.approx(100.0, rel=1e-10)
+        assert volumed_al.mass == pytest.approx(270.0, rel=1e-10)
+        assert volumed_al.cost == pytest.approx(1.35, rel=1e-10)
 
     def test_density_change_no_effect_without_volume(self, bare_al):
         bare_al.density = 5.0

@@ -8,14 +8,14 @@ class TestMaterialConstruction:
 
     def test_metal_valid_construction(self, aluminum):
         assert aluminum.name == "Aluminum"
-        assert aluminum.density == 2.7
-        assert aluminum.specific_cost == 2.50
+        assert aluminum.density == pytest.approx(2.7, rel=1e-10)
+        assert aluminum.specific_cost == pytest.approx(2.50, rel=1e-10)
         assert aluminum.color == "silver"
 
     def test_solvent_valid_construction(self, water):
         assert water.name == "Water"
-        assert water.density == 1.0
-        assert water.specific_cost == 0.01
+        assert water.density == pytest.approx(1.0, rel=1e-10)
+        assert water.specific_cost == pytest.approx(0.01, rel=1e-10)
         assert water.color == "clear"
 
     def test_negative_density_raises(self):
@@ -54,11 +54,11 @@ class TestMaterialProperties:
     def test_density_returns_g_per_cm3(self):
         # Input 2.7 g/cm³ should come back as 2.7
         m = Metal(name="Al", density=2.7, specific_cost=1.0, color="grey")
-        assert m.density == 2.7
+        assert m.density == pytest.approx(2.7, rel=1e-10)
 
     def test_specific_cost_returns_per_kg(self):
         m = Metal(name="Al", density=2.7, specific_cost=3.45, color="grey")
-        assert m.specific_cost == 3.45
+        assert m.specific_cost == pytest.approx(3.45, rel=1e-10)
 
     def test_density_round_trip(self):
         # Verify internal storage → getter round-trips correctly
@@ -78,11 +78,11 @@ class TestMaterialSetters:
 
     def test_set_density(self, aluminum):
         aluminum.density = 5.0
-        assert aluminum.density == 5.0
+        assert aluminum.density == pytest.approx(5.0, rel=1e-10)
 
     def test_set_specific_cost(self, aluminum):
         aluminum.specific_cost = 10.0
-        assert aluminum.specific_cost == 10.0
+        assert aluminum.specific_cost == pytest.approx(10.0, rel=1e-10)
 
     def test_set_name(self, aluminum):
         aluminum.name = "Steel"

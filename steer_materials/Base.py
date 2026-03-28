@@ -9,8 +9,6 @@ from steer_core.Mixins.Propagation import PropagationMixin
 
 from datetime import datetime as dt
 
-import numpy as np
-
 
 class _Material(
     ValidationMixin, 
@@ -64,14 +62,14 @@ class _Material(
     @property
     def density(self) -> float:
         """Density of the material in g/cm³."""
-        return np.round(self._density * (KG_TO_G / M_TO_CM**3), 2)
+        return self._density * (KG_TO_G / M_TO_CM**3)
 
     @property
     def density_range(self) -> tuple[float, float]:
         """Soft range for density (±10% of current value) in g/cm³."""
         return (
-            np.round(self._density_range[0] * (KG_TO_G / M_TO_CM**3), 2),
-            np.round(self._density_range[1] * (KG_TO_G / M_TO_CM**3), 2),
+            self._density_range[0] * (KG_TO_G / M_TO_CM**3),
+            self._density_range[1] * (KG_TO_G / M_TO_CM**3),
         )
 
     @property
@@ -82,14 +80,14 @@ class _Material(
     @property
     def specific_cost(self):
         """Cost per kilogram in $/kg."""
-        return np.round(self._specific_cost, 2)
+        return self._specific_cost
 
     @property
     def specific_cost_range(self) -> tuple[float, float]:
         """Soft range for specific cost (0.5x–2x current value) in $/kg."""
         return (
-            np.round(self._specific_cost_range[0], 2),
-            np.round(self._specific_cost_range[1], 2),
+            self._specific_cost_range[0],
+            self._specific_cost_range[1],
         )
 
     @property
@@ -273,7 +271,7 @@ class _VolumedMaterialMixin:
     def volume(self) -> float | None:
         """Volume in cm³, or `None` if not set."""
         if hasattr(self, '_volume') and self._volume is not None:
-            return np.round(self._volume * (M_TO_CM**3), 2)
+            return self._volume * (M_TO_CM**3)
         else:
             return None
         
@@ -281,7 +279,7 @@ class _VolumedMaterialMixin:
     def mass(self) -> float | None:
         """Mass in grams, or `None` if not set."""
         if hasattr(self, '_mass') and self._mass is not None:
-            return np.round(self._mass * KG_TO_G, 2)
+            return self._mass * KG_TO_G
         else:
             return None
         
@@ -289,7 +287,7 @@ class _VolumedMaterialMixin:
     def cost(self) -> float | None:
         """Cost in dollars, or `None` if not set."""
         if hasattr(self, '_cost') and self._cost is not None:
-            return np.round(self._cost, 2)
+            return self._cost
         else:
             return None
 
