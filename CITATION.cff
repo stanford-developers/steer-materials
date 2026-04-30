@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+title: steer-materials
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Nicholas
+    family-names: Siemons
+    email: nsiemons@stanford.edu
+    affiliation: Stanford University
+    orcid: https://orcid.org/0000-0002-0755-3981
+repository-code: https://github.com/stanford-developers/steer-materials
+license: AGPL-3.0-or-later
+version: 0.1.39
+doi: 
+date-released: '2026-03-17'
+keywords:
+  - battery
+  - materials
+  - simulation
+  - electrochemistry
+  - energy-storage
