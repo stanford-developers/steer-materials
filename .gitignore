@@ -6,3 +6,4 @@ scripts/
 dist/
 Archive/
 app_builds/
+.vscode/
