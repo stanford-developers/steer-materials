@@ -52,7 +52,7 @@ pytest --cov=steer_materials
 
 ## Documentation
 
-Full documentation for the STEER ecosystem is available at the [STEER documentation site](https://github.com/stanford-developers).
+Full documentation for this package is available at [stanford-developers.github.io/steer-materials](https://stanford-developers.github.io/steer-materials/).
 
 ## Contributing
 
@@ -69,4 +69,4 @@ This project is dual-licensed:
 1. **Open source** — [GNU Affero General Public License v3.0](https://www.gnu.org/licenses/agpl-3.0) (AGPL-3.0-or-later)
 2. **Commercial** — A separate commercial license is available for use without AGPL-3.0 copyleft requirements. Contact [nsiemons@stanford.edu](mailto:nsiemons@stanford.edu) for details.
 
-See [LICENCE.txt](LICENCE.txt) for full terms.
+See [LICENSE](LICENSE) for full terms.
