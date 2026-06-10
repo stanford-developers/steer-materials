@@ -52,7 +52,7 @@ pytest --cov=steer_materials
 
 ## Documentation
 
-Full documentation for the STEER ecosystem is available at the [STEER documentation site](https://github.com/stanford-developers).
+Full documentation for this package is available at [stanford-developers.github.io/steer-materials](https://stanford-developers.github.io/steer-materials/).
 
 ## Contributing
 

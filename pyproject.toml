@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "steer-materials"
 dynamic = ["version"]
-description = "Modelling energy storage from cell to site - STEER OpenCell Design"
+description = "Base material classes for the STEER OpenCell platform."
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "AGPL-3.0-or-later"}
@@ -31,7 +31,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "steer-core==0.2.17",
+    "steer-core==0.2.18",
 ]
 
 [project.optional-dependencies]
@@ -58,7 +58,7 @@ docs = [
 Homepage = "https://github.com/stanford-developers/steer-materials/"
 Repository = "https://github.com/stanford-developers/steer-materials/"
 "Bug Tracker" = "https://github.com/stanford-developers/steer-materials/issues"
-Documentation = "https://github.com/stanford-developers"
+Documentation = "https://stanford-developers.github.io/steer-materials/"
 
 [tool.setuptools]
 package-dir = {"" = "."}

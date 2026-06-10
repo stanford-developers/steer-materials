@@ -1,5 +1,4 @@
 import pytest
-import numpy as np
 from steer_materials.Base import _Material, Metal, Solvent
 
 
