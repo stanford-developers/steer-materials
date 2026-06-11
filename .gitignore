@@ -5,3 +5,7 @@ scripts/
 *.DS_Store
 dist/
 Archive/
+app_builds/
+.vscode/
+.venv/
+.pytest_cache/

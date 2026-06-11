@@ -5,12 +5,12 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "steer-materials"
 dynamic = ["version"]
-description = "Modelling energy storage from cell to site - STEER OpenCell Design"
+description = "Base material classes for the STEER OpenCell platform."
 readme = "README.md"
 requires-python = ">=3.10"
-license = {text = "MIT"}
+license = {text = "AGPL-3.0-or-later"}
 authors = [
-    {name = "Nicholas Siemons", email = "nsiemons@stanford.edu"}
+    {name = "Nicholas Siemons", email = "nsiemons@stanford.edu"},
 ]
 maintainers = [
     {name = "Nicholas Siemons", email = "nsiemons@stanford.edu"}
@@ -20,7 +20,7 @@ classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -31,7 +31,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "steer-core==0.1.32",
+    "steer-core==0.2.18",
 ]
 
 [project.optional-dependencies]
@@ -48,11 +48,17 @@ test = [
     "pytest",
     "pytest-cov"
 ]
+docs = [
+    "mkdocs>=1.5",
+    "mkdocs-material>=9.0",
+    "mkdocstrings[python]>=0.24",
+]
 
 [project.urls]
 Homepage = "https://github.com/stanford-developers/steer-materials/"
 Repository = "https://github.com/stanford-developers/steer-materials/"
 "Bug Tracker" = "https://github.com/stanford-developers/steer-materials/issues"
+Documentation = "https://stanford-developers.github.io/steer-materials/"
 
 [tool.setuptools]
 package-dir = {"" = "."}
