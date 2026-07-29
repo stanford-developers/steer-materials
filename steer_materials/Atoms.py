@@ -15,6 +15,8 @@ from steer_core.Constants.Periodic_table import (
     atomic_numbers_to_masses
 )
 
+from steer_core.Constants.Units import AU_TO_KG, KG_TO_AU
+
 class Atom(
     ValidationMixin, 
     SerializerMixin, 
@@ -51,7 +53,7 @@ class Atom(
         Calculate the atomic mass based on the atom's name.
         """
         atomic_number = {v: k for k, v in atomic_numbers_to_names.items()}[self._name]
-        self._atomic_mass = atomic_numbers_to_masses[atomic_number]
+        self._atomic_mass = atomic_numbers_to_masses[atomic_number] * AU_TO_KG
 
     def _calculate_symbol_from_name(self):
         """
@@ -72,7 +74,7 @@ class Atom(
         Calculate the atomic mass based on the atom's symbol.
         """
         atomic_number = {v: k for k, v in atomic_numbers_to_symbols.items()}[self._symbol]
-        self._atomic_mass = atomic_numbers_to_masses[atomic_number]
+        self._atomic_mass = atomic_numbers_to_masses[atomic_number] * AU_TO_KG
 
     def _calculate_name_from_symbol(self):
         """
@@ -91,7 +93,7 @@ class Atom(
         """
         Calculate the atomic mass based on the atom's atomic number.
         """
-        self._atomic_mass = atomic_numbers_to_masses[self._atomic_number]
+        self._atomic_mass = atomic_numbers_to_masses[self._atomic_number] * AU_TO_KG
 
     def _calculate_name_from_atomic_number(self):
         """
@@ -109,19 +111,20 @@ class Atom(
         """
         Calculate the atomic name based on the atom's atomic mass.
         """
-        self._name = {v: k for k, v in atomic_numbers_to_masses.items()}[self._atomic_mass]
+        self._name = {v: k for k, v in atomic_numbers_to_masses.items()}[self.atomic_mass]
 
     def _calculate_symbol_from_mass(self):
         """
         Calculate the atomic symbol based on the atom's atomic mass.
         """
-        self._symbol = {v: k for k, v in atomic_numbers_to_masses.items()}[self._atomic_mass]
+        atomic_number = {v: k for k, v in atomic_numbers_to_masses.items()}[self.atomic_mass]
+        self._symbol = atomic_numbers_to_symbols[atomic_number]
 
     def _calculate_atomic_number_from_mass(self):
         """
         Calculate the atomic number based on the atom's atomic mass.
         """
-        self._atomic_number = {v: k for k, v in atomic_numbers_to_masses.items()}[self._atomic_mass]
+        self._atomic_number = {v: k for k, v in atomic_numbers_to_masses.items()}[self.atomic_mass]
 
     @property
     def name(self) -> str:
@@ -137,7 +140,7 @@ class Atom(
 
     @property
     def atomic_mass(self) -> float:
-        return self._atomic_mass
+        return round(self._atomic_mass * KG_TO_AU, 3)
 
     @name.setter
     @recalculate("mass_from_name")
@@ -169,7 +172,7 @@ class Atom(
     @recalculate("atomic_number_from_mass")
     def atomic_mass(self, value: float):
         self.validate_positive_float(value, "atomic_mass")
-        self._atomic_mass = value
+        self._atomic_mass = value * AU_TO_KG  
 
 
 
