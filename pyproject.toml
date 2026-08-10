@@ -31,7 +31,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "steer-core==0.2.19",
+    "steer-core==0.2.20",
 ]
 
 [project.optional-dependencies]
