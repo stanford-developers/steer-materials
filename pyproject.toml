@@ -31,7 +31,10 @@ classifiers = [
 ]
 
 dependencies = [
-    "steer-core==0.2.20",
+    # Compatible-release range, not an exact pin: an exact pin means a steer-core
+    # security patch cannot be installed without rebuilding this package too.
+    # A deploy's reproducibility comes from its vendored wheel set, not from here.
+    "steer-core>=0.2.21,<0.3",
 ]
 
 [project.optional-dependencies]
